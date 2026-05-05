@@ -2,7 +2,7 @@
 
 Welcome to my workspace dedicated to **Computational Fluid Dynamics (CFD)** with OpenFOAM. This repository documents my progress in fundamentals for aeronautical engineering.
 
-## 🎯 Objective
+## Objective
 The goal of this project is to master the complete CFD pipeline:
 
 - **Pre-processing**: Mesh generation (blockMesh, Gmsh).
@@ -11,25 +11,22 @@ The goal of this project is to master the complete CFD pipeline:
 
 - **Post-processing**: Analysis and visualization using ParaView.
 
-## 🚀 Methodology
-I work in an isolated **Docker** environment to ensure reproducibility, while versioning my configuration files with **Git**. I follow a bottom-up, iterative approach: understanding the mesh physics before adding complexity to the geometries.
-
-## 🧪 Small Studies (Roadmap)
+## Roadmap of Small Studies 
 Here are the studies I'm conducting to validate my skills:
 
-1. **Lid-Driven Cavity**: Validation of the OpenFOAM folder structure (`0/`, `constant/`, `system/`) and understanding the vortex center.
+1. **Lid-Driven Cavity**: Validation of the OpenFOAM folder structure and understanding the vortex center with a typical case.
 
-2. **Canal Obstacle**: Importing a cylinder via STL and using `snappyHexMesh` to observe the Von Kármán wake.
+2. **Canal Obstacle**: Importing obstacles (such as cylinder for the Von Karman Vortex case) via STL and using `snappyHexMesh` to observe their influence on simple streams.
 
 3. **Airfoil Analysis**: Studying the behavior of a 2D airfoil with Gmsh.
 
-## 🛠️ Tech Stack
+## Tech Stack
 - **OS**: macOS M1 (Workstation)
 - **Container**: Docker (OpenFOAM-v2512)
 - **Post-processing**: ParaView
 - **Versioning**: Git / GitHub
 
-## 📊 Visualization
+## Visualization
 *(Add a screenshot of your cavity vortex here)*
 
 ---
