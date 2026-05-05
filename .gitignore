@@ -5,3 +5,4 @@ postProcessing/
 VTK/
 *.log
 .DS_Store
+case.foam
