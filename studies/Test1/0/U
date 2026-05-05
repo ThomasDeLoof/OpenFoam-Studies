@@ -1,0 +1,30 @@
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volVectorField;
+    object      U;
+}
+
+dimensions      [0 1 -1 0 0 0 0]; // Unités : L/T (m/s)
+
+internalField   uniform (0 0 0); // Vitesse initiale partout dans la boîte
+
+boundaryField
+{
+    movingWall
+    {
+        type            fixedValue;
+        value           uniform (1 0 0); // Le couvercle glisse à 1 m/s vers la droite
+    }
+
+    fixedWalls
+    {
+        type            noSlip; // Vitesse = 0 à la paroi (adhérence)
+    }
+
+    frontAndBack
+    {
+        type            empty; // Indique à OpenFOAM que c'est une simulation 2D
+    }
+}
