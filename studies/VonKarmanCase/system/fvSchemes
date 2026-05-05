@@ -1,0 +1,8 @@
+FoamFile { version 2.0; format ascii; class dictionary; object fvSchemes; }
+
+ddtSchemes { default Euler; }   // Schéma de discrétisation temporelle (Euler explicite)
+gradSchemes { default Gauss linear; } // Schéma de discrétisation spatiale pour le gradient (Gauss linéaire)
+divSchemes { default none; div(phi,U) Gauss linear; }  // Schéma de discrétisation pour la divergence (Gauss linéaire pour div(phi,U))
+laplacianSchemes { default Gauss linear orthogonal; } // Schéma de discrétisation pour le laplacien (Gauss linéaire orthogonal)
+interpolationSchemes { default linear; } // Schéma d'interpolation pour les champs scalaires et vectoriels (linéaire)
+snGradSchemes { default orthogonal; } // Schéma de discrétisation pour le gradient normal à la surface (orthogonal)
