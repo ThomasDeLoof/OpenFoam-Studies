@@ -14,7 +14,7 @@ Throughout this study, I first encountered with common CFD challenges and the re
 
 ## Visual Validation 
 
-After these improvements, the simulation was successful and I was able to visualize these vortices thanks to the Stream Line filter of Paraview. The results show strong agreement with the benchmark, which confirms accuracy and code validity.
+After these improvements, the simulation was successful and I was able to capture the primary vortex migration and the secondary Moffatt vortices in the corners thanks to the Stream Line filter of Paraview. The results show strong agreement with the benchmark, which confirms accuracy and code validity.
 
 <p align="center">
   <b>Fig. 1: CFD results visualisation using Paraview</b>
