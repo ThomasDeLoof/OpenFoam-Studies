@@ -1,7 +1,7 @@
 # Test Case : Lid-Driven Cavity Study
 
 ## Project Overview
-The Lid-Driven Cavity is a classic benchmark in fluid dynamics, that I used here to validate my simulation setup and my comprehension of CFD basics. The goal was to solve the incompressible Navier-Stokes equations at different Reynolds numbers and compare the results with the established benchmark data from **Ghia et al. (1982)**.
+The Lid-Driven Cavity is a classic benchmark in fluid dynamics, that I used here to validate my simulation setup and my comprehension of CFD basics. The goal was to solve the incompressible Navier-Stokes equations at different Reynolds numbers and compare the results with the established benchmark data from **Ghia et al. Solutions for incompressible flows (1982)**.
 
 ## Difficulties and progression
 
@@ -14,7 +14,7 @@ Troughout this study, I first struggled with basic problems in CFD. My results w
 
 ## Visual Validation 
 
-After these improvements, the simulation was successfull and I was able to perfectly visualize these vortices thanks to the Stream Line filter of Paraview. The results are visually the same as the benchmark (p 14 to 16).
+After these improvements, the simulation was successfull and I was able to perfectly visualize these vortices thanks to the Stream Line filter of Paraview. The results are visually the same as the benchmark (p 14 to 16), which confirms accuracy and code validity.
 
 <p align="center">
   <b>Fig. 1: CFD results visualisation using Paraview</b>
@@ -27,30 +27,34 @@ After these improvements, the simulation was successfull and I was able to perfe
     </td>
     <td align="center">
       <img src="plots/Result_Re_1000.png" width="350px"/><br/>
-        <sub>(a) Stream Lines at Re = 1000</sub>
+        <sub>(b) Stream Lines at Re = 1000</sub>
     </td>
     <td align="center">
       <img src="plots/Result_Re_10000.png" width="350px"/><br/>
-        <sub>(a) Stream Lines at Re = 10000</sub>
+        <sub>(c) Stream Lines at Re = 10000</sub>
     </td>
   </tr>
 </table>
 
-
-### Numerical Validation
-The comparison against the benchmarck data confirms high accuracy and code validity :
-
-| Primal Vortex Center Position | | | |
-| :--- | :--- | :--- | :--- |
-| **Reynolds Number (Re)** | 100 | 1000 | 10000 |  
-| **Results** | | | |
-| **Gia & al. (1982)** | | | |
-
-| Velocity profiles (Ux at the vertical centerline) | | | |
-| :--- | :--- | :--- | :--- |
-| **Reynolds Number (Re)** | 100 | 1000 | 10000 |  
-| **Results** | | | |
-| **Gia & al. (1982)** | | | |
+<p align="center">
+  <b>Fig. 2: Benchmark theoretical solutions</b>
+</p>
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="plots/Gia&al_Re_100" width="350px"/><br/>
+        <sub>(a) Stream Lines at Re = 100</sub>
+    </td>
+    <td align="center">
+      <img src="plots/Gia&al_Re_1000" width="350px"/><br/>
+        <sub>(b) Stream Lines at Re = 1000</sub>
+    </td>
+    <td align="center">
+      <img src="plots/Gia&al_Re_10000" width="350px"/><br/>
+        <sub>(c) Stream Lines at Re = 10000</sub>
+    </td>
+  </tr>
+</table>
 
 ## How to use
 The configuration files are organized in the `/system` and `/constant` directories.
@@ -58,4 +62,5 @@ Run the simulation using:
 ```bash
 blockMesh
 icoFoam
-To view on paraview : parafoam (or touch TestCase.foam and open it with the software)
+parafoam (to view in paraview)
+(or touch TestCase.foam and open it with the software)
