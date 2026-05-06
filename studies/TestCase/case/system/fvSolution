@@ -21,10 +21,16 @@ solvers
     {
         solver          PBiCGStab;
         preconditioner  DILU;
-        tolerance       1e-05;
-        relTol          0;
+        tolerance       1e-06;
+        relTol          0.1;
     }
 }
 
-// Paramètres pour le solveur PISO (Pressure Implicit with Splitting of Operators)
-PISO { nCorrectors 2; nNonOrthogonalCorrectors 0; pRefCell 0; pRefValue 0; }
+// PISO solver parameter (Pressure Implicit with Splitting of Operators)
+PISO { 
+    nCorrectors 3; 
+    nNonOrthogonalCorrectors 1; // mesh corrector for non-orthogonal meshes  
+    pRefCell 0; 
+    pRefValue 0; 
+    }
+
