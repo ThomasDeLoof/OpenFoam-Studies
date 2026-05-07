@@ -40,16 +40,18 @@ castellatedMeshControls
     resolveFeatureAngle 30; // angle in degrees for detecting sharp edges
     allowFreeStandingZoneFaces true; // allow faces not attached to any cell, useful for complex geometries
 
-    features ( { file "cylindre.eMesh"; level 1; } ); // using the edge features from the STL file 
+    features ( { file "cylindre.eMesh"; level 2; } ); // using the edge features from the STL file 
 
     refinementSurfaces
     {
-        cylinder { level (1 1); } // detail level, level n means 2^n = 32 times finer than the base mesh 
+        cylinder { level (2 2); } // detail level, level n means 2^n = 32 times finer than the base mesh 
     }
 
     refinementRegions
     {
-        refinementBox { mode inside; levels ((1 1)); } // refinement level
+        refinementBox { mode distance; 
+            levels ((0.5 3) (1.0 2)); // Level 3 until 0.5m, then Level 2 until 1.0m
+        }
     }
 
     // initial point for the meshing algorithm, should be inside the domain but outside the geometry
@@ -59,8 +61,8 @@ castellatedMeshControls
 // snapping parameters 
 snapControls
 {
-    nSmoothPatch 3; 
-    tolerance 1.0;
+    nSmoothPatch 5; // number of smoothing iterations for the patch before snapping
+    tolerance 1.0; // maximum distance a point can move during snapping
     nSolveIter 10;
     nRelaxIter 5;
 }
@@ -96,6 +98,7 @@ meshQualityControls
     minTriangleTwist 0.02;
     nSmoothScale 4;
     errorReduction 0.75;
+    planarity 1e-4;
 }
 
 mergeTolerance 1e-6;

@@ -1,5 +1,8 @@
 /*--------------------------------*- C++ -*----------------------------------*/
 // global variables for the case
-U_inlet    0.0075; //m/s
+U_inlet    0.00075; //m/s
 D          0.2; //m
 nu         1e-6; //m²/s
+
+Re=U_inlet*D/nu; // Reynolds number
+

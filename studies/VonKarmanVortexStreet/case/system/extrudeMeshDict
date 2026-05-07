@@ -1,0 +1,34 @@
+/*--------------------------------*- C++ -*----------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      extrudeMeshDict;
+}
+
+// Extrusion of the 3D mesh to create a 2.5D mesh (extrusion in the z direction)
+
+// mesh construction parameters
+constructFrom mesh;
+sourceCase    ".";
+sourcePatches (front); // extrusion in respect to the 'front' patch created by snappyHexMesh
+
+exposedPatchName back; // new face "back" created by extrusion, will be used as outlet
+
+// extrusion type (linear regarding z direction)
+extrudeModel linearDirection;
+
+nLayers 1; // critical for 2.5D, only one layer in the z direction
+expansionRatio 1.0;
+
+linearDirectionCoeffs
+{
+    direction (0 0 1); // in the z direction
+    thickness 0.05;    // height regarding the z direction
+}
+
+// mesh quality
+flipNormals false;
+compress    true;
+mergeFaces false; // to preserve the mesh structure, we do not merge faces after extrusion
