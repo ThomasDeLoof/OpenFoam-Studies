@@ -1,7 +1,6 @@
 # OpenFOAM : Ignore numerical results
 [0-9]*
 ![0]/
-postProcessing/
 VTK/
 *.log
 .DS_Store
