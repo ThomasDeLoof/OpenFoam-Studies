@@ -1,0 +1,61 @@
+FoamFile { version 2.0; format ascii; class dictionary; object blockMeshDict; }
+
+// cube points (5mx2mx0.05m)
+vertices
+(
+    (-1 -1 0)      // 0
+    ( 4 -1 0)      // 1
+    ( 4  1 0)      // 2
+    (-1  1 0)      // 3
+    (-1 -1 0.05)  // 4
+    ( 4 -1 0.05)  // 5
+    ( 4  1 0.05)  // 6
+    (-1  1 0.05)  // 7
+);
+
+// cubic cells of 5cm side => 100 divisions in x and 40 in y (2000 cells total)
+// 2D => 1 cell in z
+blocks (
+    hex (0 1 2 3 4 5 6 7) (100 40 1) simpleGrading (1 1 1)
+);
+
+edges ();
+
+// boundaries definition
+boundary
+(
+    inlet
+    {
+        type patch; 
+        faces
+        (
+            (0 3 7 4) // Face at x = -1
+        );
+    }
+    outlet
+    {
+        type patch;
+        faces
+        (
+            (1 5 6 2) // Face at x = 4
+        );
+    }
+    walls
+    {
+        type wall; // classic wall boundary condition
+        faces
+        (
+            (0 1 5 4) // Lower face (y = -1)
+            (3 2 6 7) // Higher face (y = 1)
+        );
+    }
+    frontAndBack
+    {
+        type empty; // critical for 2D in OpenFOAM
+        faces
+        (
+            (0 1 2 3) // Lower face (z = 0)
+            (4 5 6 7) // Higher face (z = 0.05)
+        );
+    }
+);

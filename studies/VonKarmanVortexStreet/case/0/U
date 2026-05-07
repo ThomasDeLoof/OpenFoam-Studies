@@ -7,12 +7,34 @@ FoamFile
 }
 
 dimensions      [0 1 -1 0 0 0 0];
+
+// Initial condition
 internalField   uniform (0 0 0);
+
+#include "../constant/parameters"
+
+// Boundary conditions
 boundaryField
 {
-    // generic names
-    inlet { type fixedValue; value uniform (1 0 0); }
-    outlet { type zeroGradient; }
-    walls { type noSlip; }
-    frontAndBack { type empty; }
+    inlet
+    {
+        type            fixedValue;
+        value           uniform ($U_inlet 0 0);
+    }
+    outlet
+    {
+        type            zeroGradient; // Free outflow condition, no gradient of velocity at the outlet
+    }
+    walls
+    {
+        type            noSlip; // Perfect adhesion 
+    }
+    cylinder
+    {
+        type            noSlip; 
+    }
+    frontAndBack
+    {
+        type            empty; // there is no flow in the z direction and the domain is effectively 2D
+    }
 }

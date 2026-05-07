@@ -1,0 +1,89 @@
+/*--------------------------------*- C++ -*----------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      snappyHexMeshDict;
+}
+
+// choice of base mesh generator
+castellatedMesh true;  // mesh cutting (remove cells intersecting geometry)
+snap            true;  // mesh snapping to geometry (puts points precisely on the surface)
+addLayers       true;  // adding boundary layers (if false, the snap controls are not used)
+
+// geometry and refinement
+geometry
+{
+    cylindre.stl 
+    {
+        type triSurfaceMesh;
+        name myGeometry; // name for referencing 
+    }
+    
+    // refinement box definition for the wake region (near the geometry)
+    refinementBox
+    {
+        type box;
+        min (-0.5 -0.5 0); 
+        max (3.0 0.5 0.005);
+    }
+};
+
+// mesh generation parameters
+castellatedMeshControls
+{
+    maxLocalCells 1000000;
+    maxGlobalCells 2000000;
+    minRefinementCells 10;
+    nCellsBetweenLevels 2;
+
+    features ( { file "cylindre.eMesh"; level 2; } ); // using the edge features from the STL file 
+
+    refinementSurfaces
+    {
+        myGeometry { level (4 5); } // detail level
+    }
+
+    refinementRegions
+    {
+        refinementBox { mode inside; levels ((1 3)); } // refinement level 
+    }
+
+    // point inside the domain for checking if the mesh is correctly generated (not inside the geometry)
+    locationInMesh (-0.5 0 0.0025); 
+}
+
+// snapping parameters 
+snapControls
+{
+    nSmoothPatch 3; 
+    tolerance 2.0;
+    nSolveIter 30;
+    nRelaxIter 5;
+}
+
+// boundary layer parameters
+addLayersControls
+{
+    relativeSizes true;
+    layers
+    {
+        "myGeometry.*" { nSurfaceLayers 3; } // number of layers on the geometry surface
+    }
+    expansionRatio 1.2;
+    finalLayerThickness 0.3;
+    minThickness 0.1;
+}
+
+// mesh quality parameters
+meshQualityControls
+{
+    maxNonOrtho 65;
+    maxBoundarySkewness 20;
+    maxInternalSkewness 4;
+    maxConcave 80;
+    minVol 1e-13;
+}
+
+mergeTolerance 1e-6;
