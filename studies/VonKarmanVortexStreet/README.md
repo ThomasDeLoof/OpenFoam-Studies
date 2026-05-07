@@ -18,7 +18,7 @@ The first results at Re around 100 showcased total laminar and symmetric streams
 
 I tried to match my results with those proposed in the article on **Vortices for rigid circular cylinders by Jonh H. Lienhard (1966)**, that provides an explanation for 6 different vortices regime depending on the Reynolds Number (in respect of the cylinder Diameter).
 
-![Fig 1 : Regime of fluid flow across cylinders]{plots/KarmanVortexRegime}
+![Fig 1 : Regime of fluid flow across cylinders](plot/KarmanVortexRegimes.png)
 
 
 ---
