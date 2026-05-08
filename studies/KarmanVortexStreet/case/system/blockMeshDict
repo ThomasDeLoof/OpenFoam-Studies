@@ -1,0 +1,84 @@
+/*--------------------------------*- C++ -*----------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// this mesh defines a simple rectangular domain for testing SnappyHexMesh
+
+// Geometry Parameters
+Xmin    -1.0;
+Xmax     4.0;
+Ymin    -1.0;
+Ymax     1.0;
+Zmin     0.001;
+Zmax     0.05; 
+
+// Number of cells
+Nx       50;
+Ny       20;
+Nz       4;  
+
+convertToMeters 1;
+
+vertices
+(
+    ($Xmin $Ymin $Zmin) // 0
+    ($Xmax $Ymin $Zmin) // 1
+    ($Xmax $Ymax $Zmin) // 2
+    ($Xmin $Ymax $Zmin) // 3
+    ($Xmin $Ymin $Zmax) // 4
+    ($Xmax $Ymin $Zmax) // 5
+    ($Xmax $Ymax $Zmax) // 6
+    ($Xmin $Ymax $Zmax) // 7
+);
+
+blocks
+(
+    hex (0 1 2 3 4 5 6 7) ($Nx $Ny $Nz) simpleGrading (1 1 1)
+);
+
+edges
+(
+);
+
+boundary
+(
+    inlet
+    {
+        type patch;
+        faces ((0 3 7 4));
+    }
+    outlet
+    {
+        type patch;
+        faces ((1 5 6 2));
+    }
+    walls
+    {
+        type wall;
+        faces
+        (
+            (0 4 5 1) // bottom
+            (3 2 6 7) // top
+        );
+    }
+    back
+    {
+        type symmetryPlane; 
+        faces
+        (
+            (0 1 2 3) // Face Zmin
+        );
+    }
+    front
+    {
+        type symmetryPlane; 
+        faces
+        (
+            (4 5 6 7) // Face Zmax
+        );
+    }
+);

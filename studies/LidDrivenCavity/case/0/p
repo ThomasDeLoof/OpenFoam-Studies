@@ -1,0 +1,29 @@
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      p;
+}
+
+dimensions      [0 2 -2 0 0 0 0]; // Unités : L^2/T^2 (m^2/s^2)
+
+internalField   uniform 0;
+
+boundaryField
+{
+    movingWall
+    {
+        type            zeroGradient; // La pression s'ajuste à la paroi
+    }
+
+    fixedWalls
+    {
+        type            zeroGradient;
+    }
+
+    frontAndBack
+    {
+        type            empty;
+    }
+}

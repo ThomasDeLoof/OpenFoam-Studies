@@ -1,0 +1,29 @@
+FoamFile { version 2.0; format ascii; class dictionary; object blockMeshDict; }
+
+// cube points (1mx1mx0.1m)
+vertices (
+    (0 0 0)  // 0
+    (1 0 0)  // 1
+    (1 1 0)  // 2
+    (0 1 0)  // 3
+    (0 0 0.1)// 4
+    (1 0 0.1)// 5
+    (1 1 0.1)// 6
+    (0 1 0.1)// 7
+);
+
+// Mesh size and cell number (100x100x1) with simple grading 
+// 2D => 1 cell in z
+blocks (
+    hex (0 1 2 3 4 5 6 7) (100 100 1) simpleGrading (0.2 0.2 1)
+    // simple grading with ratio 0.2 in x and y to have finer mesh near the walls (boundary layers)
+);
+
+edges ();
+
+// boundaries definition
+boundary (
+    movingWall { type wall; faces ((3 7 6 2)); } // top wall
+    fixedWalls { type wall; faces ((0 4 7 3) (2 6 5 1) (1 5 4 0)); } // walls and bottom
+    frontAndBack { type empty; faces ((0 1 2 3) (4 5 6 7)); } // for 2D simulation (useless faces set as empty)
+);
