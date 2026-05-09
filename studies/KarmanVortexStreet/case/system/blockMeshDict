@@ -14,12 +14,12 @@ Xmax     4.0;
 Ymin    -1.0;
 Ymax     1.0;
 Zmin     0.001;
-Zmax     0.05; 
+Zmax     0.099; 
 
 // Number of cells
-Nx       50;
-Ny       20;
-Nz       4;  
+Nx       100;
+Ny       40;
+Nz       1;  
 
 convertToMeters 1;
 

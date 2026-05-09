@@ -1,6 +1,6 @@
 FoamFile { version 2.0; format ascii; class dictionary; object fvSolution; }
 
-// Définition des solveurs pour la pression (p) et la vitesse (U)
+// solver definition for pressure and velocity fields
 solvers
 {
     p
@@ -9,6 +9,7 @@ solvers
         preconditioner  DIC;
         tolerance       1e-06;
         relTol          0.05;
+        smoother        GaussSeidel;
     }
 
     pFinal
@@ -24,7 +25,31 @@ solvers
         tolerance       1e-05;
         relTol          0;
     }
+
+    UFinal
+    {
+        $U;
+        relTol          0;
+    }
 }
 
-// Paramètres pour le solveur PISO (Pressure Implicit with Splitting of Operators)
-PISO { nCorrectors 2; nNonOrthogonalCorrectors 0; pRefCell 0; pRefValue 0; }
+// PISO (Pressure Implicit with Splitting of Operators) parameters for transient simulations
+/*
+PISO { 
+    nCorrectors 2; 
+    nNonOrthogonalCorrectors 1; 
+    pRefCell 0; 
+    pRefValue 0; 
+    }
+*/
+
+// PIMPLE (merged PISO-SIMPLE) parameters for transient simulations with larger time steps
+PIMPLE
+{
+    momentumPredictor yes;
+    nOuterCorrectors 1;
+    nCorrectors 2;
+    nNonOrthogonalCorrectors 1;
+    pRefCell 0;
+    pRefValue 0;
+}

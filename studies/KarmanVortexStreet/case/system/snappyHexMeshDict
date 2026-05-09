@@ -19,6 +19,8 @@ geometry
         name cylinder; 
     }
     
+
+    // simple "interest area" without importance on the meshing
     refinementBox
     {
         type box;
@@ -29,12 +31,12 @@ geometry
 
 castellatedMeshControls
 {
-    maxLocalCells 1000000;
-    maxGlobalCells 2000000;
+    maxLocalCells 800000;
+    maxGlobalCells 1000000;
     minRefinementCells 10;
     
     // smoothness through the levels of refinement 
-    nCellsBetweenLevels 4; 
+    nCellsBetweenLevels 7; 
 
     resolveFeatureAngle 30;
     allowFreeStandingZoneFaces true;
@@ -45,7 +47,7 @@ castellatedMeshControls
     {
         cylinder 
         { 
-            level (3 3); 
+            level (4 5); // level 4 for the bulk, level 5 for the boundary layer
         } 
     }
 
@@ -55,10 +57,19 @@ castellatedMeshControls
         cylinder
         {
             mode distance;
+            levels
+            (
+                (0.05 5)  // Très fin (niveau 5) juste autour du cylindre
+                (0.2  4)  // Niveau 4 pour capturer le décollement
+                (0.5  3)  // Niveau 3 pour le sillage proche
+                (1.5  2)  // Niveau 2 pour le sillage lointain
+            );
+            mode distance;
             levels (
-                (0.05 3)  // large
-                (0.15 2)  // boundary layer
-                (0.5 1)   // near wake
+                (0.1 4)  // large
+                (0.2 3)   
+                (0.4 2)  // boundary layer
+                (0.6 1)   // near wake
             );
         }
 
@@ -72,6 +83,7 @@ castellatedMeshControls
     locationInMesh (-0.2 0.2 0.025); 
 }
 
+// control of the snapping process (moving the points to the geometry)
 snapControls
 {
     nSmoothPatch 3;
@@ -81,6 +93,7 @@ snapControls
     nFeatureSnapIter 10;
 }
 
+// boundary layer meshing parameters
 addLayersControls
 {
     relativeSizes       true;
@@ -94,9 +107,10 @@ addLayersControls
 
     expansionRatio      1.2;    
     finalLayerThickness 0.5;    
-    minThickness        0.1;   
-    nLayerIter          10; 
+    minThickness        0.05;   
     
+    // stability parameters
+    nLayerIter          15; 
     nRelaxIter          5;      
     nSmoothSurfaceNormals 1;    
     nSmoothNormals      3;      

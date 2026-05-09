@@ -19,7 +19,7 @@ boundaryField
     inlet
     {
         type            fixedValue;
-        value           uniform ($U_inlet $U_inlet/1000 0);
+        value           uniform ($U_inlet_x $U_inlet_y 0);
     }
     outlet
     {
