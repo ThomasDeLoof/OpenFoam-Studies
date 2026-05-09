@@ -1,0 +1,16 @@
+#!/bin/sh
+
+. ${WM_PROJECT_DIR:?}/bin/tools/CleanFunctions
+
+cleanCase
+
+rm -rf constant/polyMesh
+rm -rf constant/triSurface/*.eMesh
+rm -f log.*
+rm -f snappyHexMesh.log
+rm -f surfaceFeatureExtract.log
+rm -f checkMesh.log
+rm -rf constant/extendedFeatureEdgeMesh
+rm -f *.obj
+
+echo "--- Cleaning Complete, ready for new run. ---"

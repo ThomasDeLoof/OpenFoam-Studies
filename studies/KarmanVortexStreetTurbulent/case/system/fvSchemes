@@ -1,0 +1,28 @@
+FoamFile { version 2.0; format ascii; class dictionary; object fvSchemes; }
+
+ddtSchemes 
+{ 
+    default Euler; // or backward for more accuracy if stable
+}  
+gradSchemes 
+{ 
+    default Gauss linear; 
+} 
+divSchemes
+{
+    default         none;
+    div(phi,U)      Gauss linearUpwind grad(U); // important to preserve vortex structure
+    div((nuEff*dev2(T(grad(U))))) Gauss linear; // for pimpleFoam
+}
+laplacianSchemes 
+{ 
+    default Gauss linear corrected;  
+} 
+interpolationSchemes 
+{ 
+    default linear; 
+} 
+snGradSchemes 
+{ 
+    default orthogonal; 
+} 

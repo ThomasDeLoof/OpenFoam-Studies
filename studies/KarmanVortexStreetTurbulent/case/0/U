@@ -1,0 +1,44 @@
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volVectorField;
+    object      U;
+}
+
+dimensions      [0 1 -1 0 0 0 0];
+
+// Initial condition
+internalField   uniform (0 0 0);
+
+#include "../constant/parameters"
+
+// Boundary conditions
+boundaryField
+{
+    inlet
+    {
+        type            fixedValue;
+        value           uniform ($U_inlet_x $U_inlet_y 0);
+    }
+    outlet
+    {
+        type            zeroGradient; // Free outflow condition, no gradient of velocity at the outlet
+    }
+    walls
+    {
+        type            noSlip; // Perfect adhesion 
+    }
+    cylinder
+    {
+        type            noSlip; 
+    }
+    front
+    {
+        type            symmetryPlane; 
+    }
+    back
+    {
+        type            symmetryPlane; 
+    }
+}

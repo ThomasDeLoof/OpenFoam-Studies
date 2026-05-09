@@ -1,9 +1,0 @@
-/*--------------------------------*- C++ -*----------------------------------*/
-// global variables for the case
-U_inlet_x    0.01; //m/s
-U_inlet_y    0.001; //m/s
-D          0.2; //m
-viscosity  1.5e-5; //m²/s, air
-
-Re=U_inlet*D/viscosity; // Reynolds number
-

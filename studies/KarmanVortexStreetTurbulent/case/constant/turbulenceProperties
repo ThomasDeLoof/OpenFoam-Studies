@@ -1,0 +1,23 @@
+/*--------------------------------*- C++ -*----------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      turbulenceProperties;
+}
+
+// laminar for Reynolds numbers below ~2000, 'RAS' or 'LES' for higher Reynolds numbers (turbulent flow)
+simulationType  laminar; 
+
+
+// WARNING : remmenber to update U and p files if turbulence is on 
+
+RAS
+{
+    // only read if 'RAS' is selected as simulationType
+    RASModel        kEpsilon;
+    turbulence      on;
+    printCoeffs     on;
+}
