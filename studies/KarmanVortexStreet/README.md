@@ -20,7 +20,7 @@ To ensure high-fidelity results, the mesh was validated against industry standar
 *   **Max Aspect Ratio:** $1.22$ (Optimal for resolving sharp gradients in the wake).
 *   **Skewness:** Maintained within safe bounds for the PIMPLE algorithm.
 
-## Solver Evolution: The "Péripéties"
+## Solver Evolution Troubleshooting
 One of the key technical takeaways was the transition from `icoFoam` to `pimpleFoam`.
 *   **From Fixed to Adaptive $\Delta t$:** I realized `icoFoam` ignored `adjustTimeStep`, leading to sub-optimal computation times on my Mac M1. Migrating to `pimpleFoam` allowed for an adaptive time-step based on a target Maximum Courant Number ($Co_{max} = 0.8$).
 *   **The Metastability Challenge:** Early simulations at $Re=150$ remained stubbornly symmetric. I learned that:
