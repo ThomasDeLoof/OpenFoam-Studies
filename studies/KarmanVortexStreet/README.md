@@ -1,35 +1,67 @@
-# Case 2 : Von Karman Vortex Street Simulation
+# Case 2: Von Karman Vortex Street Simulation (Unsteady Laminar Flow)
 
-The calculation of the stream behind a cylinder is a well known CFD benchmark and has made me capture the open, unstationary cases of CFD in Openfoam.
+## Overview
+This case focuses on the simulation of an unsteady flow behind a circular cylinder, a classic CFD benchmark. The objective was to capture the **Von Karman Vortex Street** using OpenFOAM (and compare the results with theory).
 
-## Progression & Study Outline
-I first struggled with the fact that the cylinder needed to be larger (at least same height) as the fluid domain. I started by rescaling my cylinder STL file in meters (0.2m diameter, 0.05m height) using 'surfaceCheck' and 'surfaceTransformPoints' and creating a fluid domain respecting usual mimimum size to avoid edge effects (5xD in front and on the sides, 15xD behind, same height for 2D). 
-Then the meshing crashed because I forced the refinement to stay in 2D by balancing cell levels, and snappyhexmesh crashed with the "10-point cell" error (common when snapping a single-layer mesh). I especially focused on keeping the cubic aspect of the cells (50mm sides), i.e. minimizing their aspect ratio, providing a stable foundation for the snappyHexMesh refinement. 
+## Geometry & Pre-processing
+Initially, I faced challenges with the STL scale and domain boundaries.
+*   **Rescaling:** Used `surfaceCheck` and `surfaceTransformPoints` to ensure the cylinder diameter was $D = 0.2\text{m}$ (rescaled from mm to meters).
+*   **Domain Sizing:** To avoid edge effects, I designed the fluid domain following standard aerospace guidelines: $5D$ upstream/sides and $15D$ downstream.
+*   **2.5D Constraints:** For a 2D simulation in OpenFOAM, the domain thickness (Z-axis) was set to one cell layer ($0.05\text{m}$), matching the cylinder height.
 
-### Mesh Quality Validation
-The command 'checkMesh' provided me a complete overview of the mesh created, allowing me to validate it against common standards:
-*   **Non-Orthogonality:** Max $25.2^\circ$ (Well below the $65^\circ$ critical threshold), ensuring high numerical stability.
-*   **Aspect Ratio:** $1.22$ (Optimal for resolving gradients).
-*   **Skewness:** Successfully maintained within safe bounds for the PISO/PIMPLE algorithms.
+## Meshing Challenges & Logic
+The meshing process was a major learning curve, especially regarding **SnappyHexMesh** on a single-cell layer (2.5D).
+*   **Aspect Ratio Control:** I focused on keeping the background grid (`blockMesh`) cubic ($50\text{mm}$ sides). This minimized the aspect ratio ($1.22$), providing a stable foundation for the snapping process.
+*   **Solving the "10-point cell" error:** I encountered crashes when forcing refinement levels to stay 2D. I resolved this by carefully balancing refinement levels and ensuring the snapping didn't collapse cells on the Z-front/back planes.
 
-### Result interpretation & validation
-The first results at Re around 100 showcased total laminar and symmetric streams; I was able to then preserve the vortex structure by improving the meshing refinement especially near the cylinder;
+### Mesh Quality Validation (`checkMesh`)
+To ensure high-fidelity results, the mesh was validated against industry standards:
+*   **Max Non-Orthogonality:** $25.2^\circ$ (Well below the $65^\circ$ critical threshold), ensuring high numerical stability.
+*   **Max Aspect Ratio:** $1.22$ (Optimal for resolving sharp gradients in the wake).
+*   **Skewness:** Maintained within safe bounds for the PIMPLE algorithm.
+
+## Solver Evolution: The "Péripéties"
+One of the key technical takeaways was the transition from `icoFoam` to `pimpleFoam`.
+*   **From Fixed to Adaptive $\Delta t$:** I realized `icoFoam` ignored `adjustTimeStep`, leading to sub-optimal computation times on my Mac M1. Migrating to `pimpleFoam` allowed for an adaptive time-step based on a target Maximum Courant Number ($Co_{max} = 0.8$).
+*   **The Metastability Challenge:** Early simulations at $Re=150$ remained stubbornly symmetric. I learned that:
+    1. Numerical noise isn't always enough to break symmetry; a small "kick" (perturbation in $U_y$) was added to the inlet to trigger the instability.
+    2. **Advection Time:** At low velocities, the flow requires several hundred seconds of physical time to clear the initial stationary field and fully develop the vortex street.
+
+## Result Interpretation & Validation
+I compared the results with **Lienhard (1966)**'s classification of vortex regimes :
+
+![Fig 1: Regime of fluid flow across cylinders](plot/KarmanVortexRegimes.png)
+
+# Reynolds 150
+At $Re \approx 150$, the simulation correctly predicts a stable, laminar vortex street :
+
+![Fig 2a: Vorticity Flow at Re = 150](plot/Re150/Vortex_Animation_Re150.gif)
+![Fig 2b: Pressure distribution after 20 advective times at Re = 150](plot/Re150/Final_Pressure_Re150.png)
+
+# Reynolds 600
+We espect the vortices structure to become turbulent at this Reynolds.
 
 
-I tried to match my results with those proposed in the article on **Vortices for rigid circular cylinders by Jonh H. Lienhard (1966)**, that provides an explanation for 6 different vortices regime depending on the Reynolds Number (in respect of the cylinder Diameter).
 
-![Fig 1 : Regime of fluid flow across cylinders](plot/KarmanVortexRegimes.png)
-
+### Ongoing & Future Work
+- [x] **Laminar Validation:** Match Strouhal Number ($St \approx 0.18$) with theory.
+- [ ] **Mesh Independence Study:** Comparing drag/lift coefficients across three refinement levels.
+- [ ] **Turbulence Transition:** Scaling up to $Re > 4,000$ using the $k-\omega$ SST model and implementing boundary layer inflation (snappyHexMesh layers).
 
 ---
 
-## How to launch
-Run this sequence in the openFoam terminal :
-'''bash
+## How to Launch
+Run this sequence in your OpenFOAM terminal:
+
+```bash
+# Mesh generation
 blockMesh
 surfaceFeatureExtract
 snappyHexMesh -overwrite
 checkMesh
-icoFoam
 
-./Allclean //to clean case and reload
+# Execution
+pimpleFoam
+
+# Clean-up to reload (Utility script)
+./CleanMesh
