@@ -1,7 +1,33 @@
-# OpenFOAM : Ignore numerical results
-[0-9]*
-![0]/
-VTK/
+# --------- gitignore for OpenFOAM runs -------
+# Ignore mesh
+constant/polyMesh/
+# run temporal field files
+/[0-9]*/
+# keeping field configuration
+!/0/
+!/0.org/
+
+# --- Parallel Processing ---
+processor*/
+
+# --- Logs & Temp Files ---
+log.*
 *.log
+*.state
+
+# --- ParaView ---
+*.foam
+*.OpenFOAM
+*.pvd
+*.vtm
+.vtk
+VTK/
+
+# --- OS Specific ---
 .DS_Store
-case.foam
+Thumbs.db
+
+# --- Python / Jupyter 
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
