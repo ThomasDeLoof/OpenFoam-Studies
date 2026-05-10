@@ -30,7 +30,7 @@ One of the key technical takeaways was the transition from `icoFoam` to `pimpleF
 ## Result Interpretation & Validation
 I compared the results with **Lienhard (1966)**'s classification of vortex regimes :
 
-p align="center">
+<p align="center">
   <b>Fig. 0: Regime of fluid flow across cylinders</b>
 </p>
 <table align="center">
@@ -41,24 +41,30 @@ p align="center">
   </tr>
 </table>
 
-# Reynolds 40
-At this Reynolds number, the flow is steady. The adverse pressure gradient behind the cylinder causes the boundary layer to detach, forming two symmetric recirculation bubbles, called Föppl vortices, which are typically twice the obstacle diameter.
 
-p align="center">
-  <b>Fig. 1: Karman Vortex Street at Re=40</b>
+# Reynolds 40
+At this Reynolds number, the flow is steady. The adverse pressure gradient behind the cylinder causes the boundary layer to detach, forming two symmetric recirculation bubbles, called Föppl vortices.
+
+<p align="center">
+  <b>Fig. 1: Föppl vortices at Re=40</b>
 </p>
 <table align="center">
   <tr>
     <td align="center">
-      <img src="plot/Re40/Vortex_Animation_Re40.gif" width="500px"/><br/>
+      <img src="plot/Re40/Vortex_Animation_Re40.gif" width="600px"/><br/>
+        <sub>Vorticity and Stream Lines for vortex visualisation (15 advective times)</sub>
     </td>
   </tr>
 </table>
 
 **Key Observations:**
-* Unlike the following case, the wake here is perfectly symmetric and stable. The Lift Coefficient ($C_l$) remains strictly at $0$ (calculated $0.00004$).
+* Unlike the following case, the wake here is perfectly symmetric and stable. The Lift Coefficient ($C_l$) remains strictly at $0$ (calculated mean of $0.00004$).
 * The added streamlines clearly show the fluid particles being trapped in two counter-rotating vortices.
 * Interestingly, the Vorticity Magnitude is not concentrated on the vortices themselves but along the shear layers,because it captures mainly the sheer magnitude and velocity gradients (which are very low in the bubbles).
+
+**Numerical Validation**:
+* The measured $C_d$ is constant (no oscillations), with mean = 2.016069 and STD=0.005, is slightly higher than the expected theoretical values for this regime ($\approx 1.5 - 1.6$), that is likely due to the blockage effect of the domain boundaries and localized mesh sensitivity. A domain independence test (widening the boundaries) would be the next step to reach a convergence.
+* The longitudinal extent of the bubbles was measured at approximately $2.2 \times D$, which is in agreement with the classic literature for $Re=40$.
 
 # Reynolds 130
 At $Re \approx 130$, the simulation correctly predicts a stable, laminar vortex street :
@@ -69,11 +75,11 @@ At $Re \approx 130$, the simulation correctly predicts a stable, laminar vortex 
 <table align="center">
   <tr>
     <td align="center">
-      <img src="plot/Re130/Vortex_Animation_Re130.gif" width="350px"/><br/>
+      <img src="plot/Re130/Vortex_Animation_Re130.gif" width="600px"/><br/>
         <sub>(a) Vorticity Flow</sub>
     </td>
     <td align="center">
-      <img src="plot/Re130/Final_Velocity_Re130.png" width="350px"/><br/>
+      <img src="plot/Re130/Final_Velocity_Re130.png" width="500px"/><br/>
         <sub>(b) Velocity distribution after 20 advective times</sub>
     </td>
   </tr>
@@ -94,11 +100,11 @@ At $Re = 1000$, we observe the transition towards a more chaotic wake. While the
 <table align="center">
   <tr>
     <td align="center">
-      <img src="plot/Re1000/Vorticity_Animation_Re1000.gif" width="350px"/><br/>
+      <img src="plot/Re1000/Vorticity_Animation_Re1000.gif" width="600px"/><br/>
         <sub>(a) Vorticity Flow</sub>
     </td>
     <td align="center">
-      <img src="plot/Re1000/Final_Velocity_Re1000.png" width="350px"/><br/>
+      <img src="plot/Re1000/Final_Velocity_Re1000.png" width="500px"/><br/>
         <sub>(b) Velocity distribution after 30 advective times</sub>
     </td>
   </tr>
@@ -120,11 +126,11 @@ The simulation at $Re=1000$ was validated both qualitatively and quantitatively 
 <table align="center">
   <tr>
     <td align="center">
-      <img src="plot/Re1000/Cl_Oscillation.png" width="200px"/><br/>
+      <img src="plot/Re1000/Cl_Oscillation.png" width="500px"/><br/>
         <sub>(a) Cl Oscillation</sub>
     </td>
     <td align="center">
-      <img src="plot/Re1000/Cl_Spectrum.png" width="200px"/><br/>
+      <img src="plot/Re1000/Cl_Spectrum.png" width="500px"/><br/>
         <sub>(b) Fast Fourier Transform of Cl</sub>
     </td>
   </tr>
@@ -149,7 +155,7 @@ snappyHexMesh -overwrite
 checkMesh
 
 # Execution
-foamListTimes -rm # To remove previous runs
+foamListTimes -rm && rm -rf postProcessing # To remove previous runs
 pimpleFoam
 
 # Clean-up to reload (Utility script)
