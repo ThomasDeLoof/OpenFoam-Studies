@@ -58,7 +58,7 @@ boundary
     }
     walls
     {
-        type wall;
+        type symmetry;
         faces
         (
             (0 4 5 1) // bottom
@@ -67,7 +67,7 @@ boundary
     }
     back
     {
-        type symmetryPlane; 
+        type empty; 
         faces
         (
             (0 1 2 3) // Face Zmin
@@ -75,7 +75,7 @@ boundary
     }
     front
     {
-        type symmetryPlane; 
+        type empty; 
         faces
         (
             (4 5 6 7) // Face Zmax

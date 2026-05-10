@@ -25,7 +25,7 @@ boundaryField
     }
     walls
     {
-        type            zeroGradient; // allow the pressure to adjust based on the flow conditions at the walls
+        type            symmetry; // allow the pressure to adjust based on the flow conditions at the walls
     }
     cylinder
     {

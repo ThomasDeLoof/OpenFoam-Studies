@@ -5,43 +5,26 @@ solvers
 {
     p
     {
-        solver          PCG;
-        preconditioner  DIC;
+        solver          GAMG;
         tolerance       1e-06;
-        relTol          0.05;
+        relTol          0.01;
         smoother        GaussSeidel;
     }
 
     pFinal
     {
-        $p;
+        $p;             
         relTol          0;
     }
 
-    U
+    "(U|k|omega|.*Final)" 
     {
-        solver          PBiCGStab;
-        preconditioner  DILU;
-        tolerance       1e-05;
-        relTol          0;
-    }
-
-    UFinal
-    {
-        $U;
-        relTol          0;
+        solver          smoothSolver;
+        smoother        symGaussSeidel;
+        tolerance       1e-07;
+        relTol          0.1;
     }
 }
-
-// PISO (Pressure Implicit with Splitting of Operators) parameters for transient simulations
-/*
-PISO { 
-    nCorrectors 2; 
-    nNonOrthogonalCorrectors 1; 
-    pRefCell 0; 
-    pRefValue 0; 
-    }
-*/
 
 // PIMPLE (merged PISO-SIMPLE) parameters for transient simulations with larger time steps
 PIMPLE

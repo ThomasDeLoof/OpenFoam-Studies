@@ -4,15 +4,22 @@ ddtSchemes
 { 
     default Euler; // or backward for more accuracy if stable
 }  
-gradSchemes 
-{ 
-    default Gauss linear; 
-} 
+gradSchemes
+{
+    default         Gauss linear;
+    grad(U)         cellLimited Gauss linear 1; 
+    grad(k)         cellLimited Gauss linear 1;
+    grad(omega)     cellLimited Gauss linear 1;
+}
 divSchemes
 {
     default         none;
-    div(phi,U)      Gauss linearUpwind grad(U); // important to preserve vortex structure
-    div((nuEff*dev2(T(grad(U))))) Gauss linear; // for pimpleFoam
+    div(phi,U)      Gauss linearUpwind grad(U); // Or upwind
+    div(phi,k)      Gauss upwind;               
+    div(phi,omega)  Gauss upwind;               
+    
+    // turbulent diffusion
+    div((nuEff*dev2(T(grad(U))))) Gauss linear;
 }
 laplacianSchemes 
 { 
@@ -26,3 +33,7 @@ snGradSchemes
 { 
     default orthogonal; 
 } 
+wallDist
+{
+    method meshWave; // accuracy of wall distance in complex geometries, more computationally expensive
+}

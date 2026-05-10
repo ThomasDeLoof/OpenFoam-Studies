@@ -2,26 +2,21 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       volVectorField;
-    object      U;
+    class       volScalarField;
+    object      omega;
 }
 dimensions      [0 0 -1 0 0 0 0];
 
-
 #include "../constant/parameters"
 
-// initial turbulence frequency, omega = k/(0.09*(U*I)^2)
-k_initial = 1.5*pow($U_inlet*$I, 2);
-omega_initial = k_initial/(0.09*pow($U_inlet*$I, 2));
-
-internalField   uniform omega_initial;
+internalField   uniform $omega_initial;
 
 boundaryField
 {
     inlet
     {
         type            fixedValue;
-        value           uniform omega_initial;
+        value           uniform $omega_initial;
     }
     outlet
     {
@@ -30,7 +25,7 @@ boundaryField
     cylinder
     {
         type            omegaWallFunction;
-        value           uniform omega_initial;
+        value           uniform $omega_initial;
     }
     walls { type symmetry; }
     front { type empty; }
