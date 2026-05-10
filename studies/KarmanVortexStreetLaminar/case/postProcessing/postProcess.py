@@ -22,7 +22,7 @@ T_START = 60.0  # seconds
 # Characteristic length for Stouhal computation
 L_REF = 0.2  # meters
 # Free-stream velocity
-U_INF = 0.075  # m/s
+U_INF = 0.003  # m/s
 # Signal used for frequency analysis
 SIGNAL_NAME = "Cl"
 

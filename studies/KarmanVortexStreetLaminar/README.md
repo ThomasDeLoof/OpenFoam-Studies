@@ -30,11 +30,35 @@ One of the key technical takeaways was the transition from `icoFoam` to `pimpleF
 ## Result Interpretation & Validation
 I compared the results with **Lienhard (1966)**'s classification of vortex regimes :
 
-![Fig 1: Regime of fluid flow across cylinders](plot/KarmanVortexRegimes.png)
+p align="center">
+  <b>Fig. 0: Regime of fluid flow across cylinders</b>
+</p>
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="plot/KarmanVortexRegimes.png" width="350px"/><br/>
+    </td>
+  </tr>
+</table>
 
-# Reynolds 30
-We expect a fixed pair of Föppl vortices in the wake.
+# Reynolds 40
+At this Reynolds number, the flow is steady. The adverse pressure gradient behind the cylinder causes the boundary layer to detach, forming two symmetric recirculation bubbles, called Föppl vortices, which are typically twice the obstacle diameter.
 
+p align="center">
+  <b>Fig. 1: Karman Vortex Street at Re=40</b>
+</p>
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="plot/Re40/Vortex_Animation_Re40.gif" width="500px"/><br/>
+    </td>
+  </tr>
+</table>
+
+**Key Observations:**
+* Unlike the following case, the wake here is perfectly symmetric and stable. The Lift Coefficient ($C_l$) remains strictly at $0$ (calculated $0.00004$).
+* The added streamlines clearly show the fluid particles being trapped in two counter-rotating vortices.
+* Interestingly, the Vorticity Magnitude is not concentrated on the vortices themselves but along the shear layers,because it captures mainly the sheer magnitude and velocity gradients (which are very low in the bubbles).
 
 # Reynolds 130
 At $Re \approx 130$, the simulation correctly predicts a stable, laminar vortex street :
@@ -109,21 +133,8 @@ The simulation at $Re=1000$ was validated both qualitatively and quantitatively 
 **Limitations**
 The laminar-biased solver combined with the current mesh density acts as a numerical filter. This leads to a "numerical diffusion" that likely dissipates the finer turbulent scales, and overestimates slightly the $St$. In a 2.5D simulation, the solver effectively "swallows" some of the 3D instabilities that would naturally occur at this Reynolds number. 
 
-# Reynolds 400000
-For higher Reynolds (often Re>2000), we shall change the configuration to capture the non negligeable turbulent aspect of the flow. I set the solver as RAS, and defined the k, epsilon needed fields in the `/0` file. 
-We espect a narrower, completely disorganised wake, and no vortex street.
-
-
-
-# Reynolds 4000000
-This case was not considered because it required too complex meshing and too much calculation power for my current workspace.
-
-
-
-### Ongoing & Future Work
-- [x] **Laminar Validation:** Match Strouhal Number ($St \approx 0.18$) with theory.
-- [ ] **Mesh Independence Study:** Comparing drag/lift coefficients across three refinement levels.
-- [ ] **Turbulence Transition:** Scaling up to $Re > 4,000$ using the $k-\omega$ SST model and implementing boundary layer inflation (snappyHexMesh layers).
+### Following
+The cases with higher Reynolds number (often >2000) must be considered with an entire new solver which will fully capture the flow's non negligeable turbulent aspects. See the `KarmanVortexStreetTurbulent` directory.
 
 ---
 
@@ -138,6 +149,7 @@ snappyHexMesh -overwrite
 checkMesh
 
 # Execution
+foamListTimes -rm # To remove previous runs
 pimpleFoam
 
 # Clean-up to reload (Utility script)
