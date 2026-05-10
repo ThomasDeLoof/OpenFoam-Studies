@@ -22,8 +22,8 @@ To ensure high-fidelity results, the mesh was validated against industry standar
 
 ## Solver Evolution Troubleshooting
 One of the key technical takeaways was the transition from `icoFoam` to `pimpleFoam`.
-*   **From Fixed to Adaptive $\Delta t$:** I realized `icoFoam` ignored `adjustTimeStep`, leading to sub-optimal computation times on my Mac M1. Migrating to `pimpleFoam` allowed for an adaptive time-step based on a target Maximum Courant Number ($Co_{max} = 0.8$).
-*   **The Metastability Challenge:** Early simulations at $Re=150$ remained stubbornly symmetric. I learned that:
+*   I realized `icoFoam` ignored `adjustTimeStep`, leading to sub-optimal computation times on my Mac M1. Migrating to `pimpleFoam` allowed for an adaptive time-step based on a target Maximum Courant Number ($Co_{max} = 0.8$).
+*   Early simulations at $Re=150$ remained stubbornly symmetric. I learned that:
     1. Numerical noise isn't always enough to break symmetry; a small "kick" (perturbation in $U_y$) was added to the inlet to trigger the instability.
     2. **Advection Time:** At low velocities, the flow requires several hundred seconds of physical time to clear the initial stationary field and fully develop the vortex street.
 
@@ -116,7 +116,7 @@ At $Re = 1000$, we observe the transition towards a more chaotic wake. While the
 * The vortices appear more "agitated" and lose their perfectly circular laminar shape shortly after shedding.
 * The vortices lose consistence far later than in the previous case.
 
-**Numerical validation**
+**Numerical validation:**
 To get a macroscopic check of this case, we can monitor the Strouhal Number ($St$), which characterizes the vortex shedding frequency:
 The simulation at $Re=1000$ was validated both qualitatively and quantitatively with the postProcess python program. After correcting the reference parameters ($A_{ref}$ and $U_{inf}$), the mean drag coefficient stabilized at $C_d \approx 1.35$. Frequency analysis of the lift coefficient yielded a Strouhal number of $St \approx 0.237$, showing a strong agreement with the theoretical value of $0.21$. 
 
@@ -136,10 +136,8 @@ The simulation at $Re=1000$ was validated both qualitatively and quantitatively 
   </tr>
 </table>
 
-**Limitations**
+## Limitations
 The laminar-biased solver combined with the current mesh density acts as a numerical filter. This leads to a "numerical diffusion" that likely dissipates the finer turbulent scales, and overestimates slightly the $St$. In a 2.5D simulation, the solver effectively "swallows" some of the 3D instabilities that would naturally occur at this Reynolds number. 
-
-### Following
 The cases with higher Reynolds number (often >2000) must be considered with an entire new solver which will fully capture the flow's non negligeable turbulent aspects. See the `KarmanVortexStreetTurbulent` directory.
 
 ---
@@ -155,8 +153,8 @@ snappyHexMesh -overwrite
 checkMesh
 
 # Execution
-foamListTimes -rm && rm -rf postProcessing # To remove previous runs
 pimpleFoam
 
 # Clean-up to reload (Utility script)
+foamListTimes -rm && rm -rf postProcessing # To remove previous runs
 ./CleanMesh
