@@ -9,15 +9,15 @@ FoamFile
 }
 
 // laminar for Reynolds numbers below ~2000, 'RAS' or 'LES' for higher Reynolds numbers (turbulent flow)
-simulationType  laminar; 
+simulationType  RAS; 
 
 
 // WARNING : remmenber to update U and p files if turbulence is on 
+simulationType  RAS;
 
 RAS
 {
-    // only read if 'RAS' is selected as simulationType
-    RASModel        kEpsilon;
+    RASModel        kOmegaSST;
     turbulence      on;
     printCoeffs     on;
 }

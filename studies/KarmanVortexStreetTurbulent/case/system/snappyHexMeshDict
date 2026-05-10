@@ -9,23 +9,26 @@ FoamFile
 
 castellatedMesh true;
 snap            true;
-addLayers       true;
+addLayers       true; // crucial for turbulence
 
 geometry
 {
-    cylindre.stl 
-    {
-        type triSurfaceMesh;
-        name cylinder; 
-    }
-    
+    cylinder.obj { type triSurfaceMesh; name cylinder; }
 
-    // simple "interest area" without importance on the meshing
-    refinementBox
+    // near wake box
+    nearWake
     {
         type box;
-        min (-0.5 -0.5 -0.1); 
-        max (4 0.5 0.1); 
+        min (-0.2 -0.4 -0.05); // X_min, Y_min, Z_min
+        max ( 1.5  0.4  0.05); // X_max, Y_max, Z_max
+    }
+
+    // far wake box
+    farWake
+    {
+        type box;
+        min ( 1.5 -0.6 -0.05);
+        max ( 4.0  0.6  0.05);
     }
 };
 
@@ -47,36 +50,22 @@ castellatedMeshControls
     {
         cylinder 
         { 
-            level (4 5); // level 4 for the bulk, level 5 for the boundary layer
+            level (6 7); // first for the bulk, second for curved areas
         } 
     }
 
     refinementRegions
     {
-        // distance based refinement around the cylinder
-        cylinder
-        {
-            mode distance;
-            levels
-            (
-                (0.05 5)  // Très fin (niveau 5) juste autour du cylindre
-                (0.2  4)  // Niveau 4 pour capturer le décollement
-                (0.5  3)  // Niveau 3 pour le sillage proche
-                (1.5  2)  // Niveau 2 pour le sillage lointain
-            );
-            mode distance;
-            levels (
-                (0.1 4)  // large
-                (0.2 3)   
-                (0.5 2)  // boundary layer
-                (1 1)  // near wake
-            );
-        }
-
-        refinementBox
+        nearWake
         {
             mode inside;
-            levels ((1.0 1));
+            levels ((1.0 5)); // very fine mesh in the near wake to capture vortex shedding
+        }
+
+        farWake
+        {
+            mode inside;
+            levels ((1.0 3)); // slightly coarser in far wake
         }
     }
 
@@ -101,16 +90,16 @@ addLayersControls
     {
         "cylinder.*"
         {
-            nSurfaceLayers 3;
+            nSurfaceLayers 6; // at least 5-6 layers to capture turbulence
         }
     }
 
     expansionRatio      1.2;    
     finalLayerThickness 0.5;    
-    minThickness        0.05;   
+    minThickness        0.0001;   
     
     // stability parameters
-    nLayerIter          15; 
+    nLayerIter          50; 
     nRelaxIter          5;      
     nSmoothSurfaceNormals 1;    
     nSmoothNormals      3;      
@@ -121,7 +110,7 @@ addLayersControls
     nBufferCellsNoExtrude 0;
     
     maxFaceThicknessRatio 0.5;  
-    featureAngle        60;     
+    featureAngle        130; // angle for detecting features (corners)     
 }
 
 meshQualityControls

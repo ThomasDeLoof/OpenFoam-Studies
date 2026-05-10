@@ -27,18 +27,18 @@ boundaryField
     }
     walls
     {
-        type            noSlip; // Perfect adhesion 
+        type            symmetry; // or empty depending on your case
     }
     cylinder
     {
-        type            noSlip; 
+        type            noSlip; // Perfect adhesion 
     }
     front
     {
-        type            symmetryPlane; 
+        type            empty; 
     }
     back
     {
-        type            symmetryPlane; 
+        type            empty; 
     }
 }

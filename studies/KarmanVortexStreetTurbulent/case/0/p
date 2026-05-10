@@ -33,10 +33,10 @@ boundaryField
     }
     front
     {
-        type            symmetryPlane; 
+        type            empty; 
     }
     back
     {
-        type            symmetryPlane; 
+        type            empty; 
     }
 }
