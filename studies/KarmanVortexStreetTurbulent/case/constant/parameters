@@ -1,10 +1,14 @@
 /*--------------------------------*- C++ -*----------------------------------*/
 // global variables for the case
 U_inlet_x    30; //m/s
-U_inlet_y    0.0; //m/s
+U_inlet_y    0.1; //m/s
 D          0.2; //m
 I         0.05; //turbulence intensity (5%)
+Cmu       0.09; //empirical constant for turbulence models
 viscosity  1.5e-5; //m²/s, air
 
-Re=U_inlet*D/viscosity; // Reynolds number
+// calculations
+k_initial  #eval{ 1.5 * pow($U_inlet_x * $I, 2) };
+omega_initial #eval{ pow($k_initial, 0.5) / (pow($Cmu, 0.25) * (0.07 * $D)) };
+Re #eval{ $U_inlet_x*$D/$viscosity }; // Reynolds number
 
