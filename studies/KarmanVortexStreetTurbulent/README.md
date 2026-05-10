@@ -1,22 +1,15 @@
-# Case 2b: Von Karman Turbulent Vortex Street
+# Case 2b: Von Karman Turbulent Vortex Street Simulation 
 
-# Reynolds 4000
-For higher Reynolds (often Re>2000), we shall change the configuration to capture the non negligeable turbulent aspect of the flow. I set the solver as RAS, and defined the k, epsilon needed fields in the `/0` file. 
-We espect a narrower, completely disorganised wake, and no vortex street.
+## Mesh refinement
+To fully capture the turbulent boundary layer and vortices, I have refined the meshing merely quadrupling the number of cells (especially in the near wake zone).
+* Total cell number : approx. 1.2 million
+* Number of boundary layers : 6+
+* Max aspect ratio = 4.97956 OK.
+* Max skewness = 0.386238 OK.
+* Mesh non-orthogonality Max: 38.0647 average: 4.40876
 
-
-
-# Reynolds 4000000
-This case was not considered because it required too complex meshing and too much calculation power for my current workspace.
-
-
-
-### Ongoing & Future Work
-- [x] **Laminar Validation:** Match Strouhal Number ($St \approx 0.18$) with theory.
-- [ ] **Mesh Independence Study:** Comparing drag/lift coefficients across three refinement levels.
-- [ ] **Turbulence Transition:** Scaling up to $Re > 4,000$ using the $k-\omega$ SST model and implementing boundary layer inflation (snappyHexMesh layers).
-
----
+## Parallel Processing
+To espect around 2 to 3 times faster calculations, I compensated the addition of cells with parallel processing thanks to my Apple Silicon M1 SoC and used 4 processors with each around 300k cells in their respective subdomains.
 
 ## How to Launch
 Run this sequence in your OpenFOAM terminal:
@@ -29,10 +22,14 @@ snappyHexMesh -overwrite
 checkMesh
 
 # Execution
-decomposePar # parallel processing
-mpirun -np 4 pimpleFoam -parallel
-tail -f log.pimpleFoam # live tracking of the calculations (optional)
-reconstructPar
+foamListTimes -rm && rm -rf postProcessing # To remove previous runs
+decomposePar # parallel processing initiation
+mpirun --allow-run-as-root -np 4 pimpleFoam -parallel > log.pimpleFoam & # WARNING : running as root is strongly discouraged if not in a isolated environment like Docker containers
+tail -f log.pimpleFoam # To live track the run
+reconstructPar # parallel processing ending (do not forget)
+
 
 # Clean-up to reload (Utility script)
-./CleanMesh
+mv log.pimpleFoam final_calculation.log # To register converged results
+rm -rf processor* # To remove parallel processing files
+./CleanMesh # To restart meshing
