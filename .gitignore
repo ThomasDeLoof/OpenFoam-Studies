@@ -1,12 +1,8 @@
 # --------- gitignore for OpenFOAM runs -------
 # Ignore mesh
-constant/polyMesh/
-!constant/polyMesh/boundary # keeping the patches names
+studies/**/constant/**/*
 # run temporal field files
 [0-9]*/
-# keeping field configuration
-!**/0/
-!**/0.org/
 
 # --- Parallel Processing ---
 processor*/
@@ -32,3 +28,13 @@ Thumbs.db
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
+
+# ------- Exceptions to keep -------- 
+!**/constant/transportProperties
+!**/constant/parameters
+!**/constant/turbulenceProperties
+!**/constant/g
+!**/constant/momentumTransport
+# keeping field configuration
+!**/0/
+!**/0.org/
