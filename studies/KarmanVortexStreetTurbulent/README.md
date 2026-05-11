@@ -10,7 +10,9 @@ To capture the turbulent boundary layer and the complex wake dynamics, the mesh 
 * **Max Skewness:** 0.38 (Excellent cell orthogonality).
 * **Non-Orthogonality:** Max 38.06° / Average 4.41° (Highly stable for PIMPLE/PISO solvers).
 
-> **Verification:** Post-run analysis confirmed a **$y^+ \approx 1$** across the cylinder surface. This validates the near-wall resolution, ensuring the $k-\omega$ SST model accurately solves the viscous sublayer without relying solely on wall functions.
+> **Verification:** 
+ Post-run $y^+$ analysis : $y^+$ : min = 0.505498, max = 25.2723, average = 12.0944 across the cylinder surface.
+ This indicates that the first cell height is located in the buffer layer. While the $k-\omega$ SST model handles this via automatic wall functions, a further refinement (dividing the first cell height, or adding boundary layers) would be required to fully resolve the viscous sublayer ($y^+ < 1$). This highlights the computational cost vs. accuracy trade-off in high Reynolds simulations.
 
 ## High-Performance Computing 
 The simulation was optimized for the **Apple Silicon M1 SoC** using parallel processing:
@@ -28,7 +30,9 @@ I implemented the **$k-\omega$ SST (Shear Stress Transport)** model, chosen for 
 ## Results & Physical Analysis
 At $Re = 4 \cdot 10^5$, the flow is in the **high-Reynolds regime**. 
 
-**Observations:** The 2D constraint preserves a coherent vortex street structure. While 3D instabilities (vortex stretching) are not explicitly resolved, the turbulent Viscosity ($\nu_t$) field clearly shows massive production in the wake, accounting for the energy dissipation of the chaotic flow.
+**Observations:** 
+* The 2D constraint preserves a coherent vortex street structure. While 3D instabilities (vortex stretching) are not explicitly resolved, the turbulent Viscosity ($\nu_t$) field clearly shows massive production in the wake, accounting for the energy dissipation of the chaotic flow.
+* The positive values (red) of the Q-criterion highlight areas where rotation dominates over strain. The dissipation of these structures as they move downstream is a direct result of the $k-\omega$ SST turbulence modeling.
 
 <p align="center">
   <b>Turbulent flow across cylinder at Re 4e5</b>
@@ -37,19 +41,33 @@ At $Re = 4 \cdot 10^5$, the flow is in the **high-Reynolds regime**.
   <tr>
     <td align="center">
       <img src="plots/Final_Nut_Re4e5.png" width="500px"/><br/>
-      <sub>(a) Turbulent Viscosity ($\nu_t$) Distribution (25 advective times)</sub>
+      <sub>(a) Turbulent Viscosity ($\nu_t$) Distribution (22 advective times)</sub>
     </td>
     <td align="center">
-      <img src="plots/Final_Vorticity.png" width="500px"/><br/>
-      <sub>(b) Vorticity Distribution (25 advective times)</sub>
+      <img src="plots/Final_Q_Re4e5.png" width="450px"/><br/>
+      <sub>(b) Vorticity Distribution (22 advective times)</sub>
     </td>
   </tr>
 </table>
 
-**Quantification:** Beyond visualization, the simulation was validated through :
-* The convergence of residuals (see log.pimpleFoam)
-* The analysis of the drag coefficient ($C_d$): this Reynold should be the threshold for the theoretical "drag fall" , which was indeed seen here : $C_d \approx 0.3$.
-* The Stouhal number that was validated : $S_t \approx 0.5$
+**Quantification:** 
+* The performance analysis revealed a merely constant $C_d=1.2759$ and $C_d=0.011$ still in a bit in transition ($STD=0.14$). 
+* The absence of the 'drag crisis' ($C_d$ drop around 3e+5 Reynolds) is explained by the 2D nature of the simulation, which over-predicts vortex coherence by preventing 3D turbulent dissipation (vortex stretching). However, the periodic stability of the residuals and the $Cl$ signal validates the numerical consistency of the solver.
+* The Stouhal number was $S_t \approx 0.266$, which is slightly higher than the classical $0.20$ value, for the same reasons as for the $Re=1000$ case, and also because the steady state was not perfectly 
+
+<p align="center">
+  <b>Simulation Numerical validation</b>
+</p>
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="plots/residuals_convergence.png" width="500px"/><br/>
+    </td>
+    <td align="center">
+      <img src="plots/Cl_Spectrum.png" width="500px"/><br/>
+    </td>
+  </tr>
+</table>
 
 ## How to Launch
 
