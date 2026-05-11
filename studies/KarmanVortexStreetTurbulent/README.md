@@ -30,6 +30,22 @@ At $Re = 4 \cdot 10^5$, the flow is in the **high-Reynolds regime**.
 
 **Observations:** The 2D constraint preserves a coherent vortex street structure. While 3D instabilities (vortex stretching) are not explicitly resolved, the turbulent Viscosity ($\nu_t$) field clearly shows massive production in the wake, accounting for the energy dissipation of the chaotic flow.
 
+<p align="center">
+  <b>Turbulent flow across cylinder at Re 4e5</b>
+</p>
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="plots/Final_Nut_Re4e5.png" width="500px"/><br/>
+      <sub>(a) Turbulent Viscosity ($\nu_t$) Distribution (25 advective times)</sub>
+    </td>
+    <td align="center">
+      <img src="plots/Final_Vorticity.png" width="500px"/><br/>
+      <sub>(b) Vorticity Distribution (25 advective times)</sub>
+    </td>
+  </tr>
+</table>
+
 **Quantification:** Beyond visualization, the simulation was validated through :
 * The convergence of residuals (see log.pimpleFoam)
 * The analysis of the drag coefficient ($C_d$): this Reynold should be the threshold for the theoretical "drag fall" , which was indeed seen here : $C_d \approx 0.3$.
