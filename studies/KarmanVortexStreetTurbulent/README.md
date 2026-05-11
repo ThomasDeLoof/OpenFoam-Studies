@@ -45,7 +45,7 @@ At $Re = 4 \cdot 10^5$, the flow is in the **high-Reynolds regime**.
     </td>
     <td align="center">
       <img src="plots/Final_Q_Re4e5.png" width="450px"/><br/>
-      <sub>(b) Vorticity Distribution (22 advective times)</sub>
+      <sub>(b) Q-criterion distribution (22 advective times)</sub>
     </td>
   </tr>
 </table>
