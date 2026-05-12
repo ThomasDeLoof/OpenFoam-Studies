@@ -4,12 +4,12 @@ Welcome to my workspace dedicated to Computational Fluid Dynamics (CFD) with Ope
 
 <p align="center">
   <b>Turbulent viscosity distribution around a cylinder at Supercritical flow (Re=4.10^5)</b>
-  <i>Validation: Cd ≈ 1.27 | St ≈ 0.26 | Residuals converged at 10⁻⁴</i>
 </p>
 <table align="center">
   <tr>
     <td align="center">
       <img src="studies/KarmanVortexStreetTurbulent/plots/Final_Nut_Re4e5.png" width="800px"/><br/>
+      <i>Validation: Cd ≈ 1.27 | St ≈ 0.26 | Residuals converged at 10⁻⁴</i>
     </td>
   </tr>
 </table>
